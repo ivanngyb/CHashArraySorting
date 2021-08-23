@@ -49,6 +49,7 @@ namespace PayrollSort
             sw = new Stopwatch();
         }
 
+        //Resets the unsorted array
         private void ResetUnsortedArray() 
         {
             if (unsortedPay != null)
@@ -58,6 +59,7 @@ namespace PayrollSort
             Array.Copy(pay, unsortedPay, numOfData);
         }
 
+        //Add times into an array to write into file later
         private void AddTimer(string type, long time) 
         {
             if (type.Equals("Insertion"))
@@ -74,6 +76,7 @@ namespace PayrollSort
             }
         }
 
+        //Writes the data into a .csv file
         private void Write()
         {
             try
@@ -103,6 +106,7 @@ namespace PayrollSort
             }
         }
 
+        //Populates array with random numbers
         private void PopulateArray(int numOfData)
         {
             if (pay != null)
@@ -120,6 +124,7 @@ namespace PayrollSort
 
         }
 
+        //The main run function to run the number of times and the number of data
         public void Run(int numOfRuns, int numOfData)
         {
             Console.WriteLine("Starting to sort " + numOfData + " of data " + numOfRuns + " amount of times...");
@@ -128,6 +133,7 @@ namespace PayrollSort
             PopulateArray(numOfData);
             for (int i = 0; i < numOfRuns; i++)
             {
+                //Resets after each run and starts and stops timers
                 ResetUnsortedArray();
                 Console.WriteLine("Insertion sorting...");
                 sw.Reset();
@@ -238,32 +244,41 @@ namespace PayrollSort
             int[] right;
             int[] result = new int[array.Length];
             
+            //To prevent stack overflow
             if (array.Length <= 1)
                 return array;
             
+            //Getting midpoint
             int midPoint = array.Length / 2;
             
             left = new int[midPoint];
 
-            
+            //Checks to see if there is a even or odd number of data
             if (array.Length % 2 == 0)
                 right = new int[midPoint];
             else
                 right = new int[midPoint + 1];
+            //Populating left array
             for (int i = 0; i < midPoint; i++)
                 left[i] = array[i];
+
+            //Populating right array
             int x = 0;
             
+            //Start from midpoint as we already populated left array
             for (int i = midPoint; i < array.Length; i++)
             {
                 right[x] = array[i];
                 x++;
             }
             
+            //Recursively sort left array
             left = MergeSort(left);
             
+            //Recursively sort right array
             right = MergeSort(right);
             
+            //Merge the sorted sub arrays
             result = Merge(left, right);
             return result;
 
@@ -273,12 +288,15 @@ namespace PayrollSort
         //Code was sourced from: https://www.tutorialspoint.com/heap-sort-in-chash
         private void HeapSort(int[] array)
         {
+            //Converting given elements into a heap
             int n = array.Length;
             for (int i = n / 2 - 1; i >= 0; i--)
             {
                 Heapify(array, n, i);
             }
 
+            //Loop is used to remove the root element and is replaced with the right most leaf and then heapified again to
+            //resabblish the heap
             for (int i = n - 1; i >= 0; i--)
             {
                 int temp = array[0];
@@ -290,6 +308,7 @@ namespace PayrollSort
 
         private void Heapify(int[] array, int n, int i)
         {
+            //Creates a heap structure by arranging the elements as required
             int largest = i;
             int left = 2 * i + 1;
             int right = 2 * i + 2;
